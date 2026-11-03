@@ -1,0 +1,16 @@
+# Showcase fork only (never part of an upstream pull request).
+version: 1
+app:
+  install: "python -m venv .venv && .venv/bin/pip install -r requirements.txt"
+  seed: ".venv/bin/python manage.py migrate && .venv/bin/python manage.py shell -c \"from core.models import Child; Child.objects.get_or_create(first_name='Camille', last_name='Martin', defaults={'birth_date': '2026-01-15'})\""
+  start: ".venv/bin/python manage.py migrate && .venv/bin/python manage.py runserver --nostatic 0.0.0.0:{port}"
+  url: http://localhost:{port}
+  readyPath: /login/
+  readyStatus: 200
+  runtime: python
+  env:
+    DJANGO_SETTINGS_MODULE: babybuddy.settings.showcase
+    ALLOWED_HOSTS: "localhost,127.0.0.1"
+demo:
+  maxVideos: 1
+  beforePass: true
